@@ -5,20 +5,24 @@ using System.Text;
 using System.Net;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Runtime.Serialization;
 using log4net;
 
 namespace Route53DDNS
 {
+    [DataContract]
     class IPProvider
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(IPProvider).FullName);
+        [DataMember]
         private string url;
-        private Regex regex;
+        [DataMember]
+        private string pattern;
 
         public IPProvider(string url, string pattern)
         {
             this.url = url;
-            this.regex = new Regex(pattern);
+            this.pattern = pattern;
         }
 
         public string get()
@@ -26,7 +30,7 @@ namespace Route53DDNS
             logger.Info("Requesting ip from " + url);
             string result = doHttpRequest(url);
             logger.Info("got result " + result);
-            Match match = this.regex.Match(result);
+            Match match = Regex.Match(result, pattern);
             logger.Info("Parsed regex " + match.ToString());
             return match.ToString();
         }

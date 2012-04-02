@@ -2,18 +2,28 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization.Json;
+using System.Runtime.Serialization;
+using System.IO;
 
 // various options needed for app to run
 namespace Route53DDNS
 {
+    [DataContract]
     class Options
     {
-        private string awsAccessKey;
-        private string awsSecretKey;
-        private bool externalIPNeeded;
-        private List<IPProvider> ips;
+        private const string CONFIG_FILE = "config/config.json";
 
-        public Options(string awsAccessKey, string awsSecretKey, List<IPProvider> ips)
+        [DataMember]
+        internal string awsAccessKey;
+        [DataMember]
+        internal string awsSecretKey;
+        [DataMember]
+        internal bool externalIPNeeded;
+        [DataMember]
+        internal List<IPProvider> ips;
+
+        private Options(string awsAccessKey, string awsSecretKey, List<IPProvider> ips)
         {
             this.awsAccessKey = awsAccessKey;
             this.awsSecretKey = awsSecretKey;
@@ -35,15 +45,30 @@ namespace Route53DDNS
 
         // Factory method to read from config
         public static Options loadFromConfig()
-        {    
-            List<IPProvider> ips = new List<IPProvider>();
-            
-            ips.Add(new IPProvider("http://whatismyip.org/", "(.)*"));
-            ips.Add(new IPProvider("http://strewth.org/ip.php", "([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})"));
-            ips.Add(new IPProvider("http://checkip.amazonaws.com/", "(.)*"));
-            
-            // Read
-            return new Options("", "", ips);
+        {
+            Options ret = null;
+            FileStream stream = null;
+            try
+            {
+                stream = new FileStream(CONFIG_FILE, FileMode.Open);
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Options));
+                ret = (Options)serializer.ReadObject(stream);
+
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
+            }
+
+            if (ret == null)
+            {
+                throw new ConfigurationException("Cannot read configuration!");
+            }
+
+            return ret;
         }
 
         public bool isExternalIPNeeded
@@ -59,6 +84,26 @@ namespace Route53DDNS
             get 
             {
                 return ips;
+            }
+        }
+
+        // Serializes the object into json configuration
+        public void writeToConfig()
+        {
+            FileStream stream = null;
+            try
+            {
+                stream = new FileStream(CONFIG_FILE, FileMode.OpenOrCreate);
+                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Options));
+                serializer.WriteObject(stream, this);
+
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                }
             }
         }
     }

@@ -27,6 +27,7 @@ namespace Route53DDNS
         public void start()
         {
             doIt();
+            opts.writeToConfig();
         }
 
         public void stop()
