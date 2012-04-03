@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using Route53DDNS.type;
+
 namespace Route53DDNS
 {
     public partial class MainForm : Form
@@ -56,11 +58,11 @@ namespace Route53DDNS
         private void initializeTrayMenu() 
         {
             trayMenu = new ContextMenu();
-            trayMenu.MenuItems.Add("Exit", OnExit);
+
             trayMenu.MenuItems.Add("Options", OnOptions);
             trayMenu.MenuItems.Add("Run", OnRun);
-
-
+            trayMenu.MenuItems.Add("Exit", OnExit);
+            
             trayIcon = new NotifyIcon();
             trayIcon.Text = "Route53DDNS";
             trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);

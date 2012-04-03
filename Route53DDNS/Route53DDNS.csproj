@@ -34,6 +34,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AWSSDK, Version=1.4.6.3, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>lib\AWSSDK.dll</HintPath>
+    </Reference>
     <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>lib\log4net.dll</HintPath>
@@ -51,12 +55,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConfigurationException.cs" />
-    <Compile Include="ConnectionException.cs" />
-    <Compile Include="IPProvider.cs" />
+    <Compile Include="accessor\Accessor.cs" />
+    <Compile Include="accessor\Route53AIPForHostedZoneAccessor.cs" />
+    <Compile Include="accessor\InterfaceIPAccessor.cs" />
+    <Compile Include="accessor\ExternalIPAccessor.cs" />
+    <Compile Include="client\Route53Client.cs" />
+    <Compile Include="exception\Route53DDNSException.cs" />
+    <Compile Include="exception\ConfigurationException.cs" />
+    <Compile Include="exception\ConnectionException.cs" />
+    <Compile Include="type\IPProvider.cs" />
     <Compile Include="IPRetreiver.cs" />
     <Compile Include="Runner.cs" />
-    <Compile Include="Options.cs" />
+    <Compile Include="type\Options.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -77,7 +87,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="config\config.json" />
+    <None Include="config\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

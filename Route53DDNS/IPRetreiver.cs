@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Net;
-using System.Net.Sockets;
 using log4net;
 
+using Route53DDNS.type;
+using Route53DDNS.exception;
+using Route53DDNS.accessor;
 
 namespace Route53DDNS
 {
@@ -15,7 +15,7 @@ namespace Route53DDNS
 
         public static string getIP(Options opts)
         {
-            if (opts.isExternalIPNeeded)
+            if (opts.IsExternalIPNeeded)
                 return getExternalIP(opts);
 
             return getInterfaceIP(opts);
@@ -24,20 +24,21 @@ namespace Route53DDNS
         // Extrenal IP in dotted quad format
         private static string getExternalIP(Options opts) 
         {
-            foreach (IPProvider provider in opts.ipProviders)
+            foreach (IPProvider provider in opts.IPProviders)
             {
                 try
                 {
-                    string ip = provider.get();
+                    string ip = new GetExternalIPAccessor(provider).get();
                     if (ip == null || ip == "")
                     {
+                        logger.Warn("Returned IP is either null or empty");
                         continue;
                     }
                     return ip;
                 }
-                catch (Exception e)
+                catch (Route53DDNSException e)
                 {
-                    logger.Error("Error trying to retrieve ip : " + e.ToString());
+                    logger.Error("Error trying to retrieve IP : " + e.ToString());
                 }
             }
 
@@ -47,22 +48,7 @@ namespace Route53DDNS
         // Internal IP of one of interfaces for internal dyn dns 
         private static string getInterfaceIP(Options opts)
         {
-            IPHostEntry host;
-            string localIP = "";
-            host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (IPAddress ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    localIP = ip.ToString();
-                }
-            }
-
-            if (localIP == "")
-            {
-                throw new ConnectionException("Cannot get internal IP");
-            }
-            return localIP;
+            return new InterfaceIPAccessor().get();
         }
     }
 }
