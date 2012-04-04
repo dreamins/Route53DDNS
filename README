@@ -1,0 +1,23 @@
+A Windows UI application to use Route53 as a Dynamic DNS provider. 
+Application is supposed to be launched on any machine inside network behind one NAT-ing device with one external IP.
+It deliberately does not do anything with registry, but stores everything in files.
+
+There is no installer at this point. 
+
+= Requirements =
+.NET framework 4
+Visual Studio Express C# 2010
+
+= Installation =
+1. Download the source from github by doing in git shell
+git clone git://github.com/dreamins/Route53DDNS.git
+2. Open with Visual Studio Express C# 2010 (or any other recent enough for .NET 4.0)
+3. Edit config/config.json put your aws access key, aws secret key and hosted zone there. Note that they are plain text, one of the best answers in my opionon for this is here http://developer.pidgin.im/wiki/PlainTextPasswords
+3. Rebuild
+4. Pick the executable from release folder.
+
+= Notes =
+a. The package includes modified version of log4net built with .NET client profile.
+Original log4net can be downloaded from http://logging.apache.org/log4net/ and is distributed under Apache License 2.0
+
+b. The package includes pre-compiled by AWS AWSSDK 1.4.6.3. It can be downloadad from http://aws.amazon.com/sdkfornet/ and is distributed under Apache License 2.0

@@ -56,6 +56,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="accessor\Accessor.cs" />
+    <Compile Include="accessor\Route53UpdateARecordForHostedZoneAccessor.cs" />
     <Compile Include="accessor\Route53AIPForHostedZoneAccessor.cs" />
     <Compile Include="accessor\InterfaceIPAccessor.cs" />
     <Compile Include="accessor\ExternalIPAccessor.cs" />
