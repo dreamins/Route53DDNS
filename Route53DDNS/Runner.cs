@@ -54,7 +54,7 @@ namespace Route53DDNS
                 if (oldIP != null && String.Equals(oldIP, myIP))
                 {
                     logger.Info("Nothing changed. Bye monster.");
-                    //return;
+                    return;
                 }
 
                 logger.Info("Updating record at Route53 ");
