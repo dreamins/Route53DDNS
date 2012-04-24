@@ -19,12 +19,15 @@ namespace Route53DDNS.accessor
         private Route53Client client;
         private string hostedZone;
         private string dnsIP;
+        private string oldIP;
+        private string myIP;
 
-        public Route53UpdateARecordForHostedZoneAccessor(Route53Client client, string hostedZone, string dnsIP)
+        public Route53UpdateARecordForHostedZoneAccessor(Route53Client client, string hostedZone, string oldIP, string myIP)
         {
             this.client = client;
             this.hostedZone = hostedZone;
-            this.dnsIP = dnsIP;
+            this.oldIP = oldIP;
+            this.myIP = myIP;
         }
 
         public override bool get()
@@ -39,21 +42,27 @@ namespace Route53DDNS.accessor
                     response = client.listRecordSets(hostedZone, nextRecordIdentifier);
                     nextRecordIdentifier = response.ListResourceRecordSetsResult.NextRecordIdentifier;
 
-                    foreach (ResourceRecordSet rrset in response.ListResourceRecordSetsResult.ResourceRecordSets)
+                    foreach (ResourceRecordSet RRSet in response.ListResourceRecordSetsResult.ResourceRecordSets)
                     {
-                        if (rrset.Type != "A")
+                        if (RRSet.Type != "A")
                         {
                             continue;
                         }
                         // well we still assume that there is only one A record
                         // but at least make minimal defence do not update it
                         // if ip doesn't match
-
-                        recordToUpdate = rrset.ResourceRecords.Find(delegate (ResourceRecord rr) {
+                        recordToUpdate = RRSet.ResourceRecords.Find(delegate(ResourceRecord rr)
+                        {
                             return !String.IsNullOrWhiteSpace(rr.Value) && rr.Value.Equals(dnsIP);
                         });
 
-                        //update!
+                        
+                        //update assemble a delete/add batch
+                        client.updateRRSet(this.hostedZone, RRSet,  cloneRRSetWithNewValue(RRSet, myIP));
+
+                        // well we either throw an exception, or request is succesfully done
+                        // the point here is that we don't really need to poll for the result from R53
+                        // it will either go in sync, or we will retry next time!
                         return true;
                     }
 
@@ -65,6 +74,21 @@ namespace Route53DDNS.accessor
             {
                 throw new ConfigurationException("Cannot call AWS Route53 " + ex.Message);
             }
+        }
+
+        private ResourceRecordSet cloneRRSetWithNewValue(ResourceRecordSet RRSet, string myIP)
+        {
+            ResourceRecordSet ret = new ResourceRecordSet()
+                .WithAliasTarget(RRSet.AliasTarget)
+                .WithName(RRSet.Name)
+                .WithSetIdentifier(RRSet.SetIdentifier)
+                .WithTTL(RRSet.TTL)
+                .WithType(RRSet.Type)
+                .WithResourceRecords(new List<ResourceRecord>() {
+                    new ResourceRecord().WithValue(myIP)
+                });
+
+            return RRSet.Weight != 0 ? ret.WithWeight(RRSet.Weight) : ret;
         }
     }
 }

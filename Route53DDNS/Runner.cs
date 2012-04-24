@@ -54,11 +54,11 @@ namespace Route53DDNS
                 if (oldIP != null && String.Equals(oldIP, myIP))
                 {
                     logger.Info("Nothing changed. Bye monster.");
-                    return;
+                    //return;
                 }
 
                 logger.Info("Updating record at Route53 ");
-                new Route53UpdateARecordForHostedZoneAccessor(client, opts.HostedZoneId, oldIP).get();
+                new Route53UpdateARecordForHostedZoneAccessor(client, opts.HostedZoneId, oldIP, myIP).get();
             } catch (exception.Route53DDNSException ex ) {
                 logger.Error("Got an exception haven't done anything perhaps." + ex.Message);
             }
