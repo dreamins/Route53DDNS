@@ -9,13 +9,12 @@ using log4net;
 
 using Route53DDNS.type;
 
-// In theory this better be implementing an interface
 namespace Route53DDNS.client
 {
     // Shall be recreated on each timed run
-    class Route53Client
+    class DefaultRoute53Client : Route53Client
     {
-        public sealed class Action
+        private sealed class Action
         {
 
             private readonly String value;
@@ -37,7 +36,7 @@ namespace Route53DDNS.client
         private static readonly ILog logger = LogManager.GetLogger(typeof(Route53Client).FullName);
         private AmazonRoute53Client client;
 
-        public Route53Client(string awsAccessKey, string awsSecretKey)
+        public DefaultRoute53Client(string awsAccessKey, string awsSecretKey)
         {
             logger.Info("Creating Route53 client");
             client = new AmazonRoute53Client(awsAccessKey, awsSecretKey);

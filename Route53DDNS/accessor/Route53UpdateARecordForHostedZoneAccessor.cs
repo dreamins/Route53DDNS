@@ -18,7 +18,6 @@ namespace Route53DDNS.accessor
     {
         private Route53Client client;
         private string hostedZone;
-        private string dnsIP;
         private string oldIP;
         private string myIP;
 
@@ -53,7 +52,7 @@ namespace Route53DDNS.accessor
                         // if ip doesn't match
                         recordToUpdate = RRSet.ResourceRecords.Find(delegate(ResourceRecord rr)
                         {
-                            return !String.IsNullOrWhiteSpace(rr.Value) && rr.Value.Equals(dnsIP);
+                            return !String.IsNullOrWhiteSpace(rr.Value) && rr.Value.Equals(oldIP);
                         });
 
                         
@@ -72,7 +71,7 @@ namespace Route53DDNS.accessor
             }
             catch (InvalidInputException ex)
             {
-                throw new ConfigurationException("Cannot call AWS Route53 " + ex.Message);
+                throw new ConnectionException("Cannot call AWS Route53 " + ex.Message);
             }
         }
 
@@ -88,6 +87,7 @@ namespace Route53DDNS.accessor
                     new ResourceRecord().WithValue(myIP)
                 });
 
+            // Route53 doesn't accept zero weights, and if you set it to zero you'll get an error!
             return RRSet.Weight != 0 ? ret.WithWeight(RRSet.Weight) : ret;
         }
     }

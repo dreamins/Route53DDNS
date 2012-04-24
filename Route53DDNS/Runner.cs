@@ -45,7 +45,7 @@ namespace Route53DDNS
                 logger.Info("Got IP [" + myIP + "]");
 
                 logger.Info("Retrieving IP from Route53");
-                Route53Client client = new Route53Client(opts.AWSAccessKey, opts.AWSSecretKey);
+                Route53Client client = new DefaultRoute53Client(opts.AWSAccessKey, opts.AWSSecretKey);
                 Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, opts.HostedZoneId);
                 string oldIP = accessor.get().Trim();
 

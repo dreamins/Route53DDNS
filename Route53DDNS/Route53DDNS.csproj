@@ -60,6 +60,7 @@
     <Compile Include="accessor\Route53AIPForHostedZoneAccessor.cs" />
     <Compile Include="accessor\InterfaceIPAccessor.cs" />
     <Compile Include="accessor\ExternalIPAccessor.cs" />
+    <Compile Include="client\Interface1.cs" />
     <Compile Include="client\Route53Client.cs" />
     <Compile Include="exception\Route53DDNSException.cs" />
     <Compile Include="exception\ConfigurationException.cs" />
