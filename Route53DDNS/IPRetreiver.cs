@@ -15,7 +15,7 @@ namespace Route53DDNS
 
         public static string getIP(Options opts)
         {
-            if (opts.IsExternalIPNeeded)
+            if (opts.GeneralOptions.ExternalIPNeeded)
                 return getExternalIP(opts);
 
             return getInterfaceIP(opts);
@@ -24,7 +24,7 @@ namespace Route53DDNS
         // Extrenal IP in dotted quad format
         private static string getExternalIP(Options opts) 
         {
-            foreach (IPProvider provider in opts.IPProviders)
+            foreach (IPProvider provider in opts.GeneralOptions.IPProviders)
             {
                 try
                 {

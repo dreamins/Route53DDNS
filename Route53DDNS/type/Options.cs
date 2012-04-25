@@ -5,137 +5,58 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 using System.IO;
+using log4net;
 
 using Route53DDNS.exception;
 
 namespace Route53DDNS.type
 {
-    // various options needed for app to run
-    // not a simple type though
-    [DataContract]
+    // A fascade for options
     class Options
     {
-        private const string CONFIG_FILE = "config/config.json";
+        private static readonly ILog logger = LogManager.GetLogger(typeof(Options).FullName);
+        private GeneralOptions generalOptions;
+        private AWSOptions awsOptions;
 
-        [DataMember]
-        private string awsAccessKey;
-        [DataMember]
-        private string awsSecretKey;
-        [DataMember]
-        private bool externalIPNeeded;
-        [DataMember]
-        private string hostedZoneId;
-        [DataMember]
-        private List<IPProvider> ips;
+        private Options(GeneralOptions generalOpts, AWSOptions awsOpts)
+        {
+            this.generalOptions = generalOpts;
+            this.awsOptions = awsOpts;
+        }
 
-        public bool IsExternalIPNeeded
+        public GeneralOptions GeneralOptions
         {
             get
             {
-                return externalIPNeeded;
+                return generalOptions;
             }
         }
 
-        public List<IPProvider> IPProviders
-        {
-            get 
-            {
-                return ips;
-            }
-        }
-
-        public string HostedZoneId
+        public AWSOptions AWSOptions
         {
             get
             {
-                return hostedZoneId;
-            }
-        }
-
-        public string AWSAccessKey
-        {
-            get
-            {
-                return awsAccessKey;
-            }
-        }
-
-        public string AWSSecretKey
-        {
-            get
-            {
-                return awsSecretKey;
-            }
-        }
-
-        public bool ExternalIPNeeded 
-        {
-            get
-            {
-                return externalIPNeeded;
+                return awsOptions;
             }
         }
 
         // Serializes the object into json configuration
         public void writeToConfig()
         {
-            FileStream stream = null;
-            try
-            {
-                stream = new FileStream(CONFIG_FILE, FileMode.OpenOrCreate);
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Options));
-                serializer.WriteObject(stream, this);
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-            }
+            logger.Info("Writing configuration");
+            // yeah we might end up with partially written files
+            // but shall we care?
+            generalOptions.write();
+            awsOptions.write();
         }
 
         // Factory method to read from config
         public static Options loadFromConfig()
         {
-            Options ret = null;
-            FileStream stream = null;
-            try
-            {
-                stream = new FileStream(CONFIG_FILE, FileMode.Open);
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(Options));
-                ret = (Options)serializer.ReadObject(stream);
-                ret.randomize();
-            }
-            finally
-            {
-                if (stream != null)
-                {
-                    stream.Close();
-                }
-            }
-
-            if (ret == null)
-            {
-                throw new ConfigurationException("Cannot read configuration!");
-            }
-
-            return ret;
-        }
-
-        private void randomize()
-        {
-            // shuffle IP providers with Knuth-Fisher algo
-            Random rand = new Random();
-            this.ips = new List<IPProvider>(ips);
-
-            for (int pos = this.ips.Count - 1; pos > 0; pos--)
-            {
-                int randPos = rand.Next(pos + 1);
-                IPProvider tmp = this.ips[pos];
-                this.ips[pos] = this.ips[randPos];
-                this.ips[randPos] = tmp;
-            }
+            logger.Info("Loading configuration");
+            GeneralOptions generalOpts = GeneralOptions.load();
+            AWSOptions awsOpts = AWSOptions.load();
+            return new Options(generalOpts, awsOpts);
         }
     }
 }

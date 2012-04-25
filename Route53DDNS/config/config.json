@@ -1,8 +1,5 @@
 {
-	"awsAccessKey":"",
-	"awsSecretKey":"",
 	"externalIPNeeded":true,
-	"hostedZoneId": "",
 	"ips":
 		[
 			{

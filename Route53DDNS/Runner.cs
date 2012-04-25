@@ -20,36 +20,34 @@ namespace Route53DDNS
 
         private Options opts;
 
-        public Runner(Options opts)
+        public Runner()
         {
-            this.opts = opts;
         }
         //create a threadpool of one thread and launch a timer with 
         public void start()
         {
             doIt();
-            opts.writeToConfig();
         }
 
         public void stop()
         {
-
         }
 
         private void doIt()
         {
             try 
             {
+                opts = Options.loadFromConfig();
                 logger.Info("Retrieving IP.");
                 string myIP = IPRetreiver.getIP(opts).Trim();
                 logger.Info("Got IP [" + myIP + "]");
 
                 logger.Info("Retrieving IP from Route53");
-                Route53Client client = new DefaultRoute53Client(opts.AWSAccessKey, opts.AWSSecretKey);
-                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, opts.HostedZoneId);
+                Route53Client client = new DefaultRoute53Client(opts.AWSOptions.AWSAccessKey, opts.AWSOptions.AWSSecretKey);
+                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, opts.AWSOptions.HostedZoneId);
                 string oldIP = accessor.get().Trim();
 
-                logger.Info("DNS is pointing to " + oldIP);
+                logger.Info("Route53 is pointing to " + oldIP);
 
                 if (oldIP != null && String.Equals(oldIP, myIP))
                 {
@@ -58,7 +56,7 @@ namespace Route53DDNS
                 }
 
                 logger.Info("Updating record at Route53 ");
-                new Route53UpdateARecordForHostedZoneAccessor(client, opts.HostedZoneId, oldIP, myIP).get();
+                new Route53UpdateARecordForHostedZoneAccessor(client, opts.AWSOptions.HostedZoneId, oldIP, myIP).get();
             } catch (exception.Route53DDNSException ex ) {
                 logger.Error("Got an exception haven't done anything perhaps." + ex.Message);
             }

@@ -23,11 +23,6 @@ namespace Route53DDNS
             InitializeComponent();
         }
 
-        private void optionsLoad(object sender, EventArgs e)
-        {
-            opts = Options.loadFromConfig();
-        }
-
         private void OnExit(object sender, EventArgs e)
         {
             Application.Exit();
@@ -50,7 +45,7 @@ namespace Route53DDNS
         {
             if (runner == null)
             {
-                runner = new Runner(opts);
+                runner = new Runner();
             }
             runner.start();
         }

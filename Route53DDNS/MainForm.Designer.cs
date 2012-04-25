@@ -40,7 +40,6 @@ namespace Route53DDNS
             this.ClientSize = new System.Drawing.Size(284, 262);
             this.Name = "Route53DDNS";
             this.Text = "Route53DDNS";
-            this.Load += new System.EventHandler(this.optionsLoad);
             this.ResumeLayout(false);
             
             // Initialize log and write hello
