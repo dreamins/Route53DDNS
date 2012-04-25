@@ -2,3 +2,4 @@
 Route53DDNS.suo
 Route53DDNS/bin/*
 Route53DDNS/obj/*
+Route53DDNS/config/aws.json
