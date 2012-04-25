@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.Threading;
 using log4net;
 
 using Route53DDNS.type;
@@ -19,25 +20,36 @@ namespace Route53DDNS
         private static readonly ILog logger = LogManager.GetLogger(typeof(Runner).FullName);
 
         private Options opts;
+        private Timer timer;
 
         public Runner()
         {
         }
+
         //create a threadpool of one thread and launch a timer with 
         public void start()
         {
-            doIt();
+            opts = Options.loadFromConfig();
+            // calculate start delay from somewhat random, but stable for given client source
+            System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(opts.AWSOptions.AWSAccessKey);
+            byte[] hashBytes = md5.ComputeHash(inputBytes);
+            long initialDelaySec = hashBytes[0] % 60;
+            logger.Info("Sleeping for initial delay of " + initialDelaySec + " seconds ");
+            timer = new Timer(this.doIt, null, initialDelaySec * 1000, opts.GeneralOptions.TimerPeriodSec * 1000);
         }
 
         public void stop()
         {
+            // Stops the timer.. Kind of
+            timer.Dispose();
         }
 
-        private void doIt()
+        private void doIt(object state)
         {
             try 
             {
-                opts = Options.loadFromConfig();
+                logger.Info("Woke up!");
                 logger.Info("Retrieving IP.");
                 string myIP = IPRetreiver.getIP(opts).Trim();
                 logger.Info("Got IP [" + myIP + "]");

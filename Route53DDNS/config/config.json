@@ -1,5 +1,6 @@
 {
 	"externalIPNeeded":true,
+	"timerPeriodSec" : 300,
 	"ips":
 		[
 			{

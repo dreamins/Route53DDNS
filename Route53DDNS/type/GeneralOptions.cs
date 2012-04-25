@@ -23,6 +23,8 @@ namespace Route53DDNS.type
         private bool externalIPNeeded;
         [DataMember]
         private List<IPProvider> ips;
+        [DataMember]
+        private long timerPeriodSec;
 
         public List<IPProvider> IPProviders
         {
@@ -37,6 +39,14 @@ namespace Route53DDNS.type
             get
             {
                 return externalIPNeeded;
+            }
+        }
+
+        public long TimerPeriodSec
+        {
+            get
+            {
+                return timerPeriodSec;
             }
         }
 
