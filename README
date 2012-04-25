@@ -12,9 +12,16 @@ Visual Studio Express C# 2010
 1. Download the source from github by doing in git shell
 git clone git://github.com/dreamins/Route53DDNS.git
 2. Open with Visual Studio Express C# 2010 (or any other recent enough for .NET 4.0)
-3. Edit config/config.json put your aws access key, aws secret key and hosted zone there. Note that they are plain text, one of the best answers in my opionon for this is here http://developer.pidgin.im/wiki/PlainTextPasswords
-3. Rebuild
-4. Pick the executable from release folder.
+3. Create config/aws.json put your aws access key, aws secret key and hosted zone there. Note that they are plain text, one of the best answers in my opionon for this is here http://developer.pidgin.im/wiki/PlainTextPasswords
+Example
+{
+	"awsAccessKey":"[Your access key here]",
+	"awsSecretKey":"[Your secret key here]",
+	"hostedZoneId": "[Your Hosted zone id here]",
+}
+3.1. In future this will be prompted and done via GUI
+4. Rebuild
+5. Pick the executable from release folder.
 
 = Notes =
 a. The package includes modified version of log4net built with .NET client profile.
