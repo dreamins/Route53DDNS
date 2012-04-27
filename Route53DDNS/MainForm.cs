@@ -16,7 +16,7 @@ namespace Route53DDNS
         private NotifyIcon trayIcon;
         private ContextMenu trayMenu;
         private Runner runner;
-        private Options opts;
+        private MenuItem runItem;
 
         public MainForm()
         {
@@ -47,7 +47,17 @@ namespace Route53DDNS
             {
                 runner = new Runner();
             }
-            runner.start();
+
+            if (!runner.Running)
+            {
+                runner.start();
+                runItem.Checked = runner.Running;
+            }
+            else
+            {
+                runner.stop();
+                runItem.Checked = runner.Running;
+            }
         }
 
         private void initializeTrayMenu() 
@@ -55,7 +65,7 @@ namespace Route53DDNS
             trayMenu = new ContextMenu();
 
             trayMenu.MenuItems.Add("Options", OnOptions);
-            trayMenu.MenuItems.Add("Run", OnRun);
+            runItem = trayMenu.MenuItems.Add("Run", OnRun);
             trayMenu.MenuItems.Add("Exit", OnExit);
             
             trayIcon = new NotifyIcon();
