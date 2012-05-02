@@ -12,6 +12,8 @@ namespace Route53DDNS.type
         private string url;
         [DataMember]
         private string pattern;
+        [DataMember]
+        private bool enabled;
 
         public IPProvider(string url, string pattern)
         {
@@ -32,6 +34,22 @@ namespace Route53DDNS.type
             get
             {
                 return pattern;
+            }
+        }
+
+        public bool Enabled
+        {
+            get
+            {
+                return enabled;
+            }
+        }
+
+        public bool Disabled
+        {
+            get
+            {
+                return !enabled;
             }
         }
     }

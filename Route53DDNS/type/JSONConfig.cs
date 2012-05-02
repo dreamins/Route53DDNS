@@ -15,9 +15,8 @@ namespace Route53DDNS.type
             FileStream stream = null;
             try
             {
-                stream = new FileStream(configFileName, FileMode.OpenOrCreate);
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-                serializer.WriteObject(stream, this);
+                stream = new FileStream(configFileName, FileMode.Create);
+                write(stream);
             }
             finally
             {
@@ -28,14 +27,19 @@ namespace Route53DDNS.type
             }
         }
 
+        protected void write(Stream stream)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+            serializer.WriteObject(stream, this);
+        }
+
         protected static T load(string configFileName)
         {
             FileStream stream = null;
             try
             {
                 stream = new FileStream(configFileName, FileMode.Open);
-                DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
-                return (T)serializer.ReadObject(stream);
+                return load(stream);
             }
             finally
             {
@@ -44,6 +48,12 @@ namespace Route53DDNS.type
                     stream.Close();
                 }
             }
+        }
+
+        protected static T load(Stream stream)
+        {
+            DataContractJsonSerializer serializer = new DataContractJsonSerializer(typeof(T));
+            return (T)serializer.ReadObject(stream);
         }
     }
 }

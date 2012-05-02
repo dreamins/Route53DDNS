@@ -66,11 +66,17 @@
     <Compile Include="exception\Route53DDNSException.cs" />
     <Compile Include="exception\ConfigurationException.cs" />
     <Compile Include="exception\ConnectionException.cs" />
+    <Compile Include="OptionsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OptionsForm.Designer.cs">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="type\AWSOptions.cs" />
     <Compile Include="type\JSONConfig.cs" />
     <Compile Include="type\Options.cs" />
     <Compile Include="type\IPProvider.cs" />
-    <Compile Include="IPRetreiver.cs" />
+    <Compile Include="accessor\IPAccessor.cs" />
     <Compile Include="Runner.cs" />
     <Compile Include="type\GeneralOptions.cs" />
     <Compile Include="MainForm.cs">
@@ -81,6 +87,9 @@
     </Compile>
     <Compile Include="Route53DDNS.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="OptionsForm.resx">
+      <DependentUpon>OptionsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -24,19 +24,27 @@ namespace Route53DDNS
         private Timer timer;
         private bool running;
 
-        //create a threadpool of one thread and launch a timer with 
         public void start()
         {
+            stop();
             logger.Info("Runner starting");
             try
             {
                 opts = Options.loadFromConfig();
-                // calculate start delay from somewhat random, but stable for given client source
-                System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
-                byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(opts.AWSOptions.AWSAccessKey);
-                byte[] hashBytes = md5.ComputeHash(inputBytes);
-                long initialDelaySec = hashBytes[0] % 60;
-                logger.Info("Sleeping for initial delay of " + initialDelaySec + " seconds ");
+                long initialDelaySec = 0;
+                if (opts.GeneralOptions.HasInitialDelay)
+                {
+                    // calculate start delay from somewhat random, but stable for given client source
+                    System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create();
+                    byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(opts.AWSOptions.AWSAccessKey);
+                    byte[] hashBytes = md5.ComputeHash(inputBytes);
+                    initialDelaySec = hashBytes[0] % opts.GeneralOptions.TimerPeriodSec;
+                    logger.Info("Sleeping for initial delay of " + initialDelaySec + " seconds ");
+                }
+                else
+                {
+                    logger.Warn("Initial delay is disabled. This is not recommended!");
+                }
                 timer = new Timer(this.doIt, null, initialDelaySec * 1000, opts.GeneralOptions.TimerPeriodSec * 1000);
                 running = true;
             }
@@ -49,7 +57,10 @@ namespace Route53DDNS
         public void stop()
         {
             // Stops the timer.. Kind of
-            timer.Dispose();
+            if (timer != null)
+            {
+                timer.Dispose();
+            }
             running = false;
         }
 
@@ -67,13 +78,14 @@ namespace Route53DDNS
             try 
             {
                 logger.Info("Woke up!");
-                logger.Info("Retrieving IP.");
-                string myIP = IPRetreiver.getIP(opts).Trim();
+                Options localOptions = opts.Clone();
+                
+                string myIP = new IPAccessor(localOptions).get().Trim();
                 logger.Info("Got IP [" + myIP + "]");
 
                 logger.Info("Retrieving IP from Route53");
-                Route53Client client = new DefaultRoute53Client(opts.AWSOptions.AWSAccessKey, opts.AWSOptions.AWSSecretKey);
-                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, opts.AWSOptions.HostedZoneId);
+                Route53Client client = new DefaultRoute53Client(localOptions.AWSOptions.AWSAccessKey, localOptions.AWSOptions.AWSSecretKey);
+                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId);
                 string oldIP = accessor.get().Trim();
 
                 logger.Info("Route53 is pointing to " + oldIP);
@@ -85,9 +97,13 @@ namespace Route53DDNS
                 }
 
                 logger.Info("Updating record at Route53 ");
-                new Route53UpdateARecordForHostedZoneAccessor(client, opts.AWSOptions.HostedZoneId, oldIP, myIP).get();
+                new Route53UpdateARecordForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, oldIP, myIP).get();
             } catch (exception.Route53DDNSException ex ) {
-                logger.Error("Got an exception haven't done anything perhaps." + ex.Message);
+                logger.Error("Got an exception haven't done anything perhaps." + ex);
+            } catch (Exception ex) {
+                logger.Error("Something very bad happened! Bailing out!", ex);
+                //die
+                throw ex;
             }
         }
         #endregion

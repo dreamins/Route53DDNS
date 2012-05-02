@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
+using System.IO;
 using log4net;
 
 
@@ -25,6 +26,8 @@ namespace Route53DDNS.type
         private List<IPProvider> ips;
         [DataMember]
         private long timerPeriodSec;
+        [DataMember]
+        private bool hasInitialDelay;
 
         public List<IPProvider> IPProviders
         {
@@ -40,6 +43,11 @@ namespace Route53DDNS.type
             {
                 return externalIPNeeded;
             }
+
+            set
+            {
+                externalIPNeeded = value;
+            }
         }
 
         public long TimerPeriodSec
@@ -48,19 +56,44 @@ namespace Route53DDNS.type
             {
                 return timerPeriodSec;
             }
+
+            set
+            {
+                timerPeriodSec = value;
+            }
         }
 
+        public bool HasInitialDelay
+        {
+            get
+            {
+                return hasInitialDelay;
+            }
 
-        public void write()
+            set
+            {
+                hasInitialDelay = value;
+            }
+        }
+
+        internal void write()
         {
             logger.Info("Writing general options from " + CONFIG_FILE);
             base.write(CONFIG_FILE);
         }
 
-        public static GeneralOptions load()
+        internal static GeneralOptions load()
         {
             logger.Info("Loading general options from " + CONFIG_FILE);
             return JSONConfig<GeneralOptions>.load(CONFIG_FILE).withRandomized();
+        }
+
+        internal GeneralOptions Clone()
+        {
+            MemoryStream stream = new MemoryStream();
+            base.write(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            return JSONConfig<GeneralOptions>.load(stream);
         }
 
         private GeneralOptions withRandomized()

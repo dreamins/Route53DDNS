@@ -32,6 +32,11 @@ namespace Route53DDNS.type
             {
                 return hostedZoneId;
             }
+
+            set
+            {
+                hostedZoneId = value;
+            }
         }
 
         public string AWSAccessKey
@@ -39,6 +44,11 @@ namespace Route53DDNS.type
             get
             {
                 return awsAccessKey;
+            }
+
+            set
+            {
+                awsAccessKey = value;
             }
         }
 
@@ -48,18 +58,31 @@ namespace Route53DDNS.type
             {
                 return awsSecretKey;
             }
+
+            set
+            {
+                awsSecretKey = value;
+            }
         }
 
-        public void write()
+        internal void write()
         {
             logger.Info("Writing AWS options to " + CONFIG_FILE);
             base.write(CONFIG_FILE);
         }
 
-        public static AWSOptions load() 
+        internal static AWSOptions load() 
         {
             logger.Info("Loading AWS options from " + CONFIG_FILE);
             return JSONConfig<AWSOptions>.load(CONFIG_FILE);
+        }
+
+        internal AWSOptions Clone()
+        {
+            MemoryStream stream = new MemoryStream();
+            base.write(stream);
+            stream.Seek(0, SeekOrigin.Begin);
+            return JSONConfig<AWSOptions>.load(stream);
         }
 
     }

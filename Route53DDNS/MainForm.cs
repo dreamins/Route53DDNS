@@ -39,6 +39,17 @@ namespace Route53DDNS
         private void OnOptions(object sender, EventArgs e)
         {
             // save and reload opts, restart runner
+            OptionsForm optionsForm = new OptionsForm();
+            optionsForm.ShowDialog();
+            if (optionsForm.Saved)
+            {
+                logger.Info("Looks like something was saved. Restarting");
+                runner.start(); // restart actually :)
+            }
+            else
+            {
+                logger.Info("Nothing saved?");
+            }
         }
 
         private void OnRun(object sender, EventArgs e)
@@ -75,5 +86,6 @@ namespace Route53DDNS
             trayIcon.ContextMenu = trayMenu;
             trayIcon.Visible = true;
         }
+
     }
 }
