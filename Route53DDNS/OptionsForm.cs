@@ -37,7 +37,7 @@ namespace Route53DDNS
         private void OptionsForm_Load(object sender, EventArgs e)
         {
             //load the configuration! I am the modifier, so I don't care if anyone modifies it!
-            opts = Options.loadFromConfig();
+            opts = Options.loadFromConfig(true);
 
             // There should be a way to bind these GUI controls generically to values, this is just plain boring :(
             this.externalIPNeeded.Checked   = opts.GeneralOptions.ExternalIPNeeded;

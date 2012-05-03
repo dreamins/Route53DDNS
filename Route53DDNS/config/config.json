@@ -2,7 +2,7 @@
 	"externalIPNeeded":true,
 	"timerPeriodSec" : 300,
 	"hasInitialDelay": true,
-    "runonstart":true,
+    "runOnStart":true,
 	"ips":
 		[
 			{

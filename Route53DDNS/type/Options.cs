@@ -55,13 +55,38 @@ namespace Route53DDNS.type
         }
 
         // Factory method to read from config
-        public static Options loadFromConfig()
+        public static Options loadFromConfig(bool withDefaults = false)
         {
             lock (lockObject)
             {
                 logger.Info("Loading configuration");
-                GeneralOptions generalOpts = GeneralOptions.load();
-                AWSOptions awsOpts = AWSOptions.load();
+                GeneralOptions generalOpts = null;
+                AWSOptions awsOpts = null;
+                try
+                {
+                    generalOpts = GeneralOptions.load();
+                    awsOpts = AWSOptions.load();
+                }
+                catch (FileNotFoundException)
+                {
+                    if (generalOpts == null)
+                    {
+                        generalOpts = new GeneralOptions();
+                        generalOpts.ExternalIPNeeded = true;
+                        generalOpts.HasInitialDelay = true;
+                        generalOpts.IPProviders = new List<IPProvider>();
+                        generalOpts.RunOnStart = false;
+                        generalOpts.TimerPeriodSec = 300;
+                    }
+
+                    if (awsOpts == null)
+                    {
+                        awsOpts = new AWSOptions();
+                        awsOpts.AWSAccessKey = String.Empty;
+                        awsOpts.AWSSecretKey = String.Empty;
+                        awsOpts.HostedZoneId = String.Empty;
+                    }
+                }
                 return new Options(generalOpts, awsOpts);
             }
         }
@@ -74,6 +99,26 @@ namespace Route53DDNS.type
                 AWSOptions awsOpts = awsOptions.Clone();
                 return new Options(generalOptions, awsOptions);
             }
+        }
+
+        public static bool isReady()
+        {
+            try
+            {
+                // kinda hacky
+                lock (lockObject)
+                {
+                    GeneralOptions generalOpts = GeneralOptions.load();
+                    AWSOptions awsOpts = AWSOptions.load();
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                logger.Warn("File not found not ready");
+                return false;
+            }
+
+            return true;
         }
     }
 }

@@ -34,6 +34,10 @@ namespace Route53DDNS
             ShowInTaskbar = false; // Remove from taskbar.
 
             base.OnLoad(e);
+            if (!Options.isReady())
+            {
+                OnOptions(this, e);
+            }
             Options opts = Options.loadFromConfig();
             if (opts.GeneralOptions.RunOnStart)
             {

@@ -41,6 +41,11 @@ namespace Route53DDNS.type
             {
                 return ips;
             }
+
+            set
+            {
+                ips = value;
+            }
         }
 
         public bool ExternalIPNeeded 
