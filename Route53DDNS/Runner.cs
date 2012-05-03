@@ -45,6 +45,9 @@ namespace Route53DDNS
                 {
                     logger.Warn("Initial delay is disabled. This is not recommended!");
                 }
+
+                long periodSec = opts.GeneralOptions.TimerPeriodSec < 30 ? 30 : opts.GeneralOptions.TimerPeriodSec;
+                periodSec *= 1000;
                 timer = new Timer(this.doIt, null, initialDelaySec * 1000, opts.GeneralOptions.TimerPeriodSec * 1000);
                 running = true;
             }
