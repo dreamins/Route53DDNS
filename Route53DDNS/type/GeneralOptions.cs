@@ -22,12 +22,18 @@ namespace Route53DDNS.type
 
         [DataMember]
         private bool externalIPNeeded;
+        
         [DataMember]
         private List<IPProvider> ips;
+        
         [DataMember]
         private long timerPeriodSec;
+
         [DataMember]
         private bool hasInitialDelay;
+
+        [DataMember]
+        private bool runOnStart;
 
         public List<IPProvider> IPProviders
         {
@@ -73,6 +79,20 @@ namespace Route53DDNS.type
             set
             {
                 hasInitialDelay = value;
+            }
+        }
+
+
+        public bool RunOnStart
+        {
+            get
+            {
+                return runOnStart;
+            }
+
+            set
+            {
+                runOnStart = value;
             }
         }
 

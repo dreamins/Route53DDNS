@@ -15,10 +15,11 @@ namespace Route53DDNS.type
         [DataMember]
         private bool enabled;
 
-        public IPProvider(string url, string pattern)
+        public IPProvider(string url, string pattern, bool enabled)
         {
             this.url = url;
             this.pattern = pattern;
+            this.enabled = enabled;
         }
 
         public string URL
@@ -26,6 +27,11 @@ namespace Route53DDNS.type
             get
             {
                 return url;
+            }
+
+            set
+            {
+                url = value;
             }
         }
 
@@ -35,6 +41,11 @@ namespace Route53DDNS.type
             {
                 return pattern;
             }
+
+            set
+            {
+                pattern = value;
+            }
         }
 
         public bool Enabled
@@ -43,6 +54,10 @@ namespace Route53DDNS.type
             {
                 return enabled;
             }
+            set
+            {
+                enabled = value;
+            }
         }
 
         public bool Disabled
@@ -50,6 +65,11 @@ namespace Route53DDNS.type
             get
             {
                 return !enabled;
+            }
+
+            set
+            {
+                enabled = !value;
             }
         }
     }

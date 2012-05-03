@@ -34,6 +34,11 @@ namespace Route53DDNS
             ShowInTaskbar = false; // Remove from taskbar.
 
             base.OnLoad(e);
+            Options opts = Options.loadFromConfig();
+            if (opts.GeneralOptions.RunOnStart)
+            {
+                run();
+            }
         }
 
         private void OnOptions(object sender, EventArgs e)
@@ -44,7 +49,10 @@ namespace Route53DDNS
             if (optionsForm.Saved)
             {
                 logger.Info("Looks like something was saved. Restarting");
-                runner.start(); // restart actually :)
+                if (runner != null && runner.Running)
+                {
+                    runner.start(); // restart actually :)
+                }
             }
             else
             {
@@ -54,21 +62,7 @@ namespace Route53DDNS
 
         private void OnRun(object sender, EventArgs e)
         {
-            if (runner == null)
-            {
-                runner = new Runner();
-            }
-
-            if (!runner.Running)
-            {
-                runner.start();
-                runItem.Checked = runner.Running;
-            }
-            else
-            {
-                runner.stop();
-                runItem.Checked = runner.Running;
-            }
+            run();
         }
 
         private void initializeTrayMenu() 
@@ -85,6 +79,25 @@ namespace Route53DDNS
             
             trayIcon.ContextMenu = trayMenu;
             trayIcon.Visible = true;
+        }
+
+        private void run()
+        {
+            if (runner == null)
+            {
+                runner = new Runner();
+            }
+
+            if (!runner.Running)
+            {
+                runner.start();
+                runItem.Checked = runner.Running;
+            }
+            else
+            {
+                runner.stop();
+                runItem.Checked = runner.Running;
+            }
         }
 
     }
