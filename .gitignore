@@ -1,5 +1,9 @@
-
-Route53DDNS.suo
+*.suo
 Route53DDNS/bin/*
 Route53DDNS/obj/*
+Route53DDNSLib/bin/*
+Route53DDNSLib/obj/*
+Route53DDNSService/bin/*
+Route53DDNSService/obj/*
 Route53DDNS/config/aws.json
+Route53DDNSService/config/aws.json

@@ -7,14 +7,14 @@ using System.Runtime.Serialization;
 using System.IO;
 using log4net;
 
-using Route53DDNS.exception;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.type
+namespace Route53DDNSLib.type
 {
     // various options needed for app to run
     // not a simple type though
     [DataContract]
-    class AWSOptions : JSONConfig<AWSOptions>
+    public class AWSOptions : JSONConfig<AWSOptions>
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(AWSOptions).FullName);
         private const string CONFIG_FILE = "config/aws.json";

@@ -8,14 +8,14 @@ using System.IO;
 using log4net;
 
 
-using Route53DDNS.exception;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.type
+namespace Route53DDNSLib.type
 {
     // various options needed for app to run
     // not a simple type though
     [DataContract]
-    class GeneralOptions : JSONConfig<GeneralOptions>
+    public class GeneralOptions : JSONConfig<GeneralOptions>
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(GeneralOptions).FullName);
         private const string CONFIG_FILE = "config/config.json";

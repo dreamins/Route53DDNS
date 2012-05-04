@@ -3,20 +3,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Net;
+using System.IO;
 using System.Threading;
 using log4net;
 
-using Route53DDNS.type;
-using Route53DDNS.client;
-using Route53DDNS.accessor;
-using Route53DDNS.exception;
+using Route53DDNSLib.type;
+using Route53DDNSLib.client;
+using Route53DDNSLib.accessor;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS
+namespace Route53DDNSLib
 {
     /*
      * Runs periodic updates with Route53
      */
-    class Runner
+    public class Runner
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Runner).FullName);
 
@@ -27,6 +28,7 @@ namespace Route53DDNS
         public void start()
         {
             stop();
+
             logger.Info("Runner starting");
             try
             {

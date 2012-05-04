@@ -6,9 +6,9 @@ using System.Net;
 using System.Net.Sockets;
 using log4net;
 
-using Route53DDNS.exception;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     class InterfaceIPAccessor: Accessor<string>
     {

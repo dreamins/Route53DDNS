@@ -2,10 +2,10 @@
 using System.Runtime.Serialization;
 using log4net;
 
-namespace Route53DDNS.type
+namespace Route53DDNSLib.type
 {
     [DataContract]
-    class IPProvider
+    public class IPProvider
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(IPProvider).FullName);
         [DataMember]

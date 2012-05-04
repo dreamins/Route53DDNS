@@ -1,0 +1,19 @@
+{
+	"externalIPNeeded":true,
+	"timerPeriodSec" : 300,
+	"hasInitialDelay": false,
+    "runOnStart":true,
+	"ips":
+		[
+			{
+				"pattern":"(.)*",
+				"url":"http:\/\/checkip.amazonaws.com\/",
+				"enabled":"true"
+			},
+			{	
+				"pattern":"([\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3}\\.[\\d]{1,3})",
+				"url":"http:\/\/strewth.org\/ip.php",
+				"enabled":"true"
+			}
+		]
+}

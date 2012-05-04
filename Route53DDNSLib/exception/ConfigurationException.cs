@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Route53DDNS.exception
+namespace Route53DDNSLib.exception
 {
-    class ConfigurationException : Route53DDNSException
+    public class ConfigurationException : Route53DDNSException
     {
         public ConfigurationException(string message) : base(message) { }
     }

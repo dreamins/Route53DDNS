@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using Amazon.Route53.Model;
 
-using Route53DDNS.type;
+using Route53DDNSLib.type;
 
 // In theory this better be implementing an interface
-namespace Route53DDNS.client
+namespace Route53DDNSLib.client
 {
     interface Route53Client
     {

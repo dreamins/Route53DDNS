@@ -6,8 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-using Route53DDNS.type;
-using Route53DDNS.exception;
+using Route53DDNSLib.type;
+using Route53DDNSLib.exception;
 
 using log4net;
 

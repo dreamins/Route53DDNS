@@ -39,9 +39,8 @@
       <HintPath>lib\AWSSDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="log4net, Version=1.2.11.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\log4net.dll</HintPath>
+    <Reference Include="log4net">
+      <HintPath>..\Route53DDNSLib\lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -56,29 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="accessor\Accessor.cs" />
-    <Compile Include="accessor\Route53UpdateARecordForHostedZoneAccessor.cs" />
-    <Compile Include="accessor\Route53AIPForHostedZoneAccessor.cs" />
-    <Compile Include="accessor\InterfaceIPAccessor.cs" />
-    <Compile Include="accessor\ExternalIPAccessor.cs" />
-    <Compile Include="client\Route53Client.cs" />
-    <Compile Include="client\DefaultRoute53Client.cs" />
-    <Compile Include="exception\Route53DDNSException.cs" />
-    <Compile Include="exception\ConfigurationException.cs" />
-    <Compile Include="exception\ConnectionException.cs" />
     <Compile Include="OptionsForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="OptionsForm.Designer.cs">
       <DependentUpon>OptionsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="type\AWSOptions.cs" />
-    <Compile Include="type\JSONConfig.cs" />
-    <Compile Include="type\Options.cs" />
-    <Compile Include="type\IPProvider.cs" />
-    <Compile Include="accessor\IPAccessor.cs" />
-    <Compile Include="Runner.cs" />
-    <Compile Include="type\GeneralOptions.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -102,6 +84,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="config\aws.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="config\config.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -116,14 +101,15 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Route53DDNSLib\Route53DDNSLib.csproj">
+      <Project>{120FF7D8-B5C1-42BB-A570-7F6E093E5211}</Project>
+      <Name>Route53DDNSLib</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="config\log4net.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <None Include="config\aws.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <Content Include="lib\log4net.dll" />
-    <Content Include="lib\log4net.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

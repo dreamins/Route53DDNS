@@ -7,12 +7,12 @@ using System.Runtime.Serialization;
 using System.IO;
 using log4net;
 
-using Route53DDNS.exception;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.type
+namespace Route53DDNSLib.type
 {
     // A fascade for options
-    class Options
+    public class Options
     {
         private static readonly ILog logger = LogManager.GetLogger(typeof(Options).FullName);
         private GeneralOptions generalOptions;

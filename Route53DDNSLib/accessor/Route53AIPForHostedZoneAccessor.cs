@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using Amazon.Route53.Model;
 
-using Route53DDNS.type;
-using Route53DDNS.client;
-using Route53DDNS.exception;
+using Route53DDNSLib.type;
+using Route53DDNSLib.client;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     // Returns dotted quad A for a single HZ assuming there is only one
     class Route53AIPForHostedZoneAccessor: Accessor<string>

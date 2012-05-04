@@ -6,9 +6,9 @@ using System.Text;
 using System.Text.RegularExpressions;
 using log4net;
 
-using Route53DDNS.type;
+using Route53DDNSLib.type;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     class GetExternalIPAccessor: Accessor<String>
     {

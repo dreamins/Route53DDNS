@@ -7,7 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-using Route53DDNS.type;
+using Route53DDNSLib.type;
+using Route53DDNSLib;
 
 namespace Route53DDNS
 {

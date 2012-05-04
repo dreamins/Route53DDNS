@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using log4net;
 
-using Route53DDNS.type;
-using Route53DDNS.exception;
-using Route53DDNS.accessor;
+using Route53DDNSLib.type;
+using Route53DDNSLib.exception;
+using Route53DDNSLib.accessor;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     class IPAccessor : Accessor<string>
     {

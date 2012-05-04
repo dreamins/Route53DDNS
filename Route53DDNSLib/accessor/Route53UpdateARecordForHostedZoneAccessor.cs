@@ -5,11 +5,11 @@ using System.Text;
 using Amazon.Route53;
 using Amazon.Route53.Model;
 
-using Route53DDNS.client;
-using Route53DDNS.type;
-using Route53DDNS.exception;
+using Route53DDNSLib.client;
+using Route53DDNSLib.type;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     // Updates hosted zone's A record with a pre-defined IP
     // note there is no update in route 53 instead it has delete and create in same batch

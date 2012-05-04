@@ -1,4 +1,4 @@
-A Windows UI application to use Route53 as a Dynamic DNS provider. 
+A Windows UI application + windows service to use Route53 as a Dynamic DNS provider. 
 Application is supposed to be launched on any machine inside network behind one NAT-ing device with one external IP.
 It deliberately does not do anything with registry, but stores everything in files.
 
@@ -10,16 +10,38 @@ Visual Studio Express C# 2010 (Depends on usage)
 
 = Usage if you trust the binaries =
 
+For UI application
+
 1. Download installation zip from http://stepanyakovlev.net/downloads/Route53DDNS.zip
 2. Unpack
-3. run the Route53DDNS.exe
+3. run the Route53DDNS.exe from Route53DDNS directory
+
+For service
+
+1. Download installation zip from http://stepanyakovlev.net/downloads/Route53DDNS.zip
+2. Unpack
+3. Determine where is your .net framework4 directory located
+4. Run "cmd" as administartor, change directory to where you unpacked the bundle + Route53DDNSService
+5. Inside cmd run c:\Windows\Microsoft.NET\Framework\v4.0.30319\InstallUtil.exe /LogToConsole=true Route53DDNSService.exe"
+6. Create Route53DDNSService\config\aws.json with AWS credentials 
+{
+	"awsAccessKey":"",
+	"awsSecretKey":"",
+	"hostedZoneId": "",
+}
+
+or
+
+run the Route53DDNS.exe and let application create the config for you in UI.
+
+7. Go to services and start it, or reboot it will autostart. Look in logs it works!
 
 = Source code compile and usage =
 1. Download the source from github by doing in git shell
 git clone git://github.com/dreamins/Route53DDNS.git
 2. Open with Visual Studio Express C# 2010 (or any other recent enough for .NET 4.0)
 4. Rebuild
-5. Run executable
+5. Run executable for UI or see above for service
 
 
 = Notes =

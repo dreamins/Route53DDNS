@@ -3,12 +3,12 @@ using System.Runtime.Serialization.Json;
 using System.Runtime.Serialization;
 using System.IO;
 
-using Route53DDNS.exception;
+using Route53DDNSLib.exception;
 
-namespace Route53DDNS.type
+namespace Route53DDNSLib.type
 {
     [DataContract]
-    class JSONConfig<T>
+    public class JSONConfig<T>
     {
         protected void write(string configFileName)
         {

@@ -7,9 +7,9 @@ using Amazon.Route53.Model;
 
 using log4net;
 
-using Route53DDNS.type;
+using Route53DDNSLib.type;
 
-namespace Route53DDNS.client
+namespace Route53DDNSLib.client
 {
     // Shall be recreated on each timed run
     class DefaultRoute53Client : Route53Client

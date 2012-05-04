@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Route53DDNS.accessor
+namespace Route53DDNSLib.accessor
 {
     abstract class Accessor<T>
     {
