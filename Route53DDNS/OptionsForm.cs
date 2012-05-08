@@ -44,6 +44,7 @@ namespace Route53DDNS
             this.hasInitialDelay.Checked    = opts.GeneralOptions.HasInitialDelay;
             this.timerPeriodSec.Text        = opts.GeneralOptions.TimerPeriodSec.ToString();
             this.runOnStart.Checked         = opts.GeneralOptions.RunOnStart;
+            this.domainName.Text            = opts.GeneralOptions.DomainName;
             this.awsAccessKey.Text          = opts.AWSOptions.AWSAccessKey;
             this.awsSecretKey.Text          = opts.AWSOptions.AWSSecretKey;
             this.hostedZoneId.Text          = opts.AWSOptions.HostedZoneId;
@@ -65,6 +66,7 @@ namespace Route53DDNS
                 opts.GeneralOptions.HasInitialDelay     = this.hasInitialDelay.Checked;
                 opts.GeneralOptions.TimerPeriodSec      = long.Parse(this.timerPeriodSec.Text);
                 opts.GeneralOptions.RunOnStart          = this.runOnStart.Checked;
+                opts.GeneralOptions.DomainName = this.domainName.Text;
                 opts.AWSOptions.AWSAccessKey            = this.awsAccessKey.Text;
                 opts.AWSOptions.AWSSecretKey            = this.awsSecretKey.Text;
                 opts.AWSOptions.HostedZoneId            = this.hostedZoneId.Text;

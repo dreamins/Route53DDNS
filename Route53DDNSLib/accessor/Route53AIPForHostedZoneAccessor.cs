@@ -8,18 +8,23 @@ using Route53DDNSLib.type;
 using Route53DDNSLib.client;
 using Route53DDNSLib.exception;
 
+using log4net;
+
 namespace Route53DDNSLib.accessor
 {
     // Returns dotted quad A for a single HZ assuming there is only one
     class Route53AIPForHostedZoneAccessor: Accessor<string>
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(Route53AIPForHostedZoneAccessor).FullName);
         private Route53Client client;
         private string hostedZone;
+        private string domainName;
 
-        public Route53AIPForHostedZoneAccessor(Route53Client client, string hostedZone)
+        public Route53AIPForHostedZoneAccessor(Route53Client client, string hostedZone, string domainName)
         {
             this.client = client;
             this.hostedZone = hostedZone;
+            this.domainName = domainName;
         }
 
         public override string get()
@@ -35,13 +40,27 @@ namespace Route53DDNSLib.accessor
 
                     foreach (ResourceRecordSet rrset in response.ListResourceRecordSetsResult.ResourceRecordSets)
                     {
+                        logger.Debug("Found rrset with name " + rrset.Name);
+
                         if (rrset.Type != "A")
                         {
                             continue;
                         }
 
+                        logger.Debug("Found rrset with type A!");
                         // We have an A record yay!
-                        return rrset.ResourceRecords[0].Value;
+
+                        // if no specific domain name required just update it
+                        if (String.IsNullOrEmpty(domainName))
+                        {
+                            return rrset.ResourceRecords[0].Value;
+                        }
+
+                        // if sepcific domain name required, then compare
+                        if (String.Equals(domainName.ToLower(), rrset.Name.ToLower())) {
+                            logger.Debug("Seems to be the one we need");
+                            return rrset.ResourceRecords[0].Value;
+                        }
                     }
 
                 } while (response.ListResourceRecordSetsResult.IsTruncated);

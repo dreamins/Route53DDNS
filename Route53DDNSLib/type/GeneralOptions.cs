@@ -35,6 +35,9 @@ namespace Route53DDNSLib.type
         [DataMember]
         private bool runOnStart;
 
+        [DataMember]
+        private string domainName;
+
         public List<IPProvider> IPProviders
         {
             get 
@@ -87,7 +90,6 @@ namespace Route53DDNSLib.type
             }
         }
 
-
         public bool RunOnStart
         {
             get
@@ -98,6 +100,19 @@ namespace Route53DDNSLib.type
             set
             {
                 runOnStart = value;
+            }
+        }
+
+        public string DomainName
+        {
+            get
+            {
+                return domainName;
+            }
+
+            set
+            {
+                domainName = value;
             }
         }
 

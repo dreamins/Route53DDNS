@@ -90,7 +90,7 @@ namespace Route53DDNSLib
 
                 logger.Info("Retrieving IP from Route53");
                 Route53Client client = new DefaultRoute53Client(localOptions.AWSOptions.AWSAccessKey, localOptions.AWSOptions.AWSSecretKey);
-                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId);
+                Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, localOptions.GeneralOptions.DomainName);
                 string oldIP = accessor.get().Trim();
 
                 logger.Info("Route53 is pointing to " + oldIP);

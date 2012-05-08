@@ -42,6 +42,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabGeneralPage = new System.Windows.Forms.TabPage();
+            this.runOnStart = new System.Windows.Forms.CheckBox();
             this.tabAWSPage = new System.Windows.Forms.TabPage();
             this.tabAdvancedPage = new System.Windows.Forms.TabPage();
             this.addButton = new System.Windows.Forms.Button();
@@ -55,7 +56,8 @@
             this.cancelUpdateButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.urlList = new System.Windows.Forms.ListBox();
-            this.runOnStart = new System.Windows.Forms.CheckBox();
+            this.domainName = new System.Windows.Forms.TextBox();
+            this.label7 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabGeneralPage.SuspendLayout();
             this.tabAWSPage.SuspendLayout();
@@ -181,6 +183,8 @@
             // 
             // tabGeneralPage
             // 
+            this.tabGeneralPage.Controls.Add(this.label7);
+            this.tabGeneralPage.Controls.Add(this.domainName);
             this.tabGeneralPage.Controls.Add(this.runOnStart);
             this.tabGeneralPage.Controls.Add(this.externalIPNeeded);
             this.tabGeneralPage.Controls.Add(this.label1);
@@ -193,6 +197,16 @@
             this.tabGeneralPage.TabIndex = 0;
             this.tabGeneralPage.Text = "General";
             this.tabGeneralPage.UseVisualStyleBackColor = true;
+            // 
+            // runOnStart
+            // 
+            this.runOnStart.AutoSize = true;
+            this.runOnStart.Location = new System.Drawing.Point(26, 101);
+            this.runOnStart.Name = "runOnStart";
+            this.runOnStart.Size = new System.Drawing.Size(166, 17);
+            this.runOnStart.TabIndex = 6;
+            this.runOnStart.Text = "Launch on start of application";
+            this.runOnStart.UseVisualStyleBackColor = true;
             // 
             // tabAWSPage
             // 
@@ -333,15 +347,21 @@
             this.urlList.Click += new System.EventHandler(this.urlList_SelectedIndexChanged);
             this.urlList.SelectedIndexChanged += new System.EventHandler(this.urlList_SelectedIndexChanged);
             // 
-            // runOnStart
+            // domainName
             // 
-            this.runOnStart.AutoSize = true;
-            this.runOnStart.Location = new System.Drawing.Point(26, 101);
-            this.runOnStart.Name = "runOnStart";
-            this.runOnStart.Size = new System.Drawing.Size(166, 17);
-            this.runOnStart.TabIndex = 6;
-            this.runOnStart.Text = "Launch on start of application";
-            this.runOnStart.UseVisualStyleBackColor = true;
+            this.domainName.Location = new System.Drawing.Point(26, 176);
+            this.domainName.Name = "domainName";
+            this.domainName.Size = new System.Drawing.Size(146, 20);
+            this.domainName.TabIndex = 7;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(178, 179);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(72, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Domain name";
             // 
             // OptionsForm
             // 
@@ -396,5 +416,7 @@
         private System.Windows.Forms.Button updateButton;
         private System.Windows.Forms.Button deleteButton;
         private System.Windows.Forms.CheckBox runOnStart;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox domainName;
     }
 }
