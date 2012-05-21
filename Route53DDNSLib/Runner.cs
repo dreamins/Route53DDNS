@@ -27,6 +27,7 @@ namespace Route53DDNSLib
 
         public void start()
         {
+            const int MILLIS_IN_SEC = 1000;
             stop();
 
             logger.Info("Runner starting");
@@ -49,8 +50,7 @@ namespace Route53DDNSLib
                 }
 
                 long periodSec = opts.GeneralOptions.TimerPeriodSec < 30 ? 30 : opts.GeneralOptions.TimerPeriodSec;
-                periodSec *= 1000;
-                timer = new Timer(this.doIt, null, initialDelaySec * 1000, opts.GeneralOptions.TimerPeriodSec * 1000);
+                timer = new Timer(this.doIt, null, initialDelaySec * MILLIS_IN_SEC, periodSec * MILLIS_IN_SEC);
                 running = true;
             }
             catch (Route53DDNSException ex)
