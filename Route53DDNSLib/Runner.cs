@@ -102,7 +102,7 @@ namespace Route53DDNSLib
                 }
 
                 logger.Info("Updating record at Route53 ");
-                new Route53UpdateARecordForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, oldIP, myIP).get();
+                new Route53UpdateARecordForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, oldIP, myIP, localOptions.GeneralOptions.DomainName).get();
             } catch (exception.Route53DDNSException ex ) {
                 logger.Error("Got an exception haven't done anything perhaps." + ex);
             } catch (Exception ex) {

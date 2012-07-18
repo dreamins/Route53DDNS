@@ -66,6 +66,12 @@ namespace Route53DDNSLib.type
                 {
                     generalOpts = GeneralOptions.load();
                     awsOpts = AWSOptions.load();
+                    if (!String.IsNullOrEmpty(generalOpts.DomainName) 
+                        && generalOpts.DomainName[generalOpts.DomainName.Length - 1] != '.')
+                    {
+                        logger.Debug("Forcefully terminating domain name with dot.");
+                        generalOpts.DomainName = generalOpts.DomainName + ".";
+                    }
                 }
                 catch (FileNotFoundException)
                 {

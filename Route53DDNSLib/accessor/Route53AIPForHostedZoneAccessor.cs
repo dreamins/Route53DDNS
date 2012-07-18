@@ -56,7 +56,7 @@ namespace Route53DDNSLib.accessor
                             return rrset.ResourceRecords[0].Value;
                         }
 
-                        // if sepcific domain name required, then compare
+                        // if specific domain name required, then compare
                         if (String.Equals(domainName.ToLower(), rrset.Name.ToLower())) {
                             logger.Debug("Seems to be the one we need");
                             return rrset.ResourceRecords[0].Value;
