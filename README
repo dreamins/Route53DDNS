@@ -12,13 +12,13 @@ Visual Studio Express C# 2010 (Depends on usage)
 
 For UI application
 
-1. Download installation zip from http://stepanyakovlev.net/downloads/Route53DDNS.zip
+1. Download archive with binaries from downloads section
 2. Unpack
 3. run the Route53DDNS.exe from Route53DDNS directory
 
 For service
 
-1. Download installation zip from http://stepanyakovlev.net/downloads/Route53DDNS.zip
+1. Download archive with binaries from downloads section
 2. Unpack
 3. Determine where is your .net framework4 directory located
 4. Run "cmd" as administartor, change directory to where you unpacked the bundle + Route53DDNSService
