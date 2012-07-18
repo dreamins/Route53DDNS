@@ -51,7 +51,7 @@
   <ItemGroup>
     <Reference Include="AWSSDK, Version=1.4.6.3, Culture=neutral, PublicKeyToken=cd2d24cd2bace800, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>lib\AWSSDK.dll</HintPath>
+      <HintPath>..\Route53DDNSLib\lib\AWSSDK.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
