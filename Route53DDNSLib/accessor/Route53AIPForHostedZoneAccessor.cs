@@ -37,7 +37,7 @@ namespace Route53DDNSLib.accessor
                 {
                     response = client.listRecordSets(hostedZone, nextRecordIdentifier);
                     nextRecordIdentifier = response.ListResourceRecordSetsResult.NextRecordIdentifier;
-
+                    logger.Debug("Looking for RRSet with name [" + domainName + "]");
                     foreach (ResourceRecordSet rrset in response.ListResourceRecordSetsResult.ResourceRecordSets)
                     {
                         logger.Debug("Found rrset with name " + rrset.Name);
