@@ -5,8 +5,8 @@ It deliberately does not do anything with registry, but stores everything in fil
 There is no installer at this point. 
 
 = Requirements =
-.NET framework 4
-Visual Studio Express C# 2010 (Depends on usage)
+.NET framework 4.5
+Visual Studio Express C# 2012 (Depends on usage)
 
 = Usage if you trust the binaries =
 
@@ -28,6 +28,7 @@ For service
 	"awsAccessKey":"",
 	"awsSecretKey":"",
 	"hostedZoneId": "",
+	"awsRegion": "us-east-1"
 }
 
 or
@@ -39,7 +40,7 @@ run the Route53DDNS.exe and let application create the config for you in UI.
 = Source code compile and usage =
 1. Download the source from github by doing in git shell
 git clone git://github.com/dreamins/Route53DDNS.git
-2. Open with Visual Studio Express C# 2010 (or any other recent enough for .NET 4.0)
+2. Open with Visual Studio Express C# 2013 (or any other recent enough for .NET 4.5)
 4. Rebuild
 5. Run executable for UI or see above for service
 
@@ -48,4 +49,4 @@ git clone git://github.com/dreamins/Route53DDNS.git
 a. The package includes modified version of log4net built with .NET client profile.
 Original log4net can be downloaded from http://logging.apache.org/log4net/ and is distributed under Apache License 2.0
 
-b. The package includes pre-compiled by AWS AWSSDK 1.4.6.3. It can be downloadad from http://aws.amazon.com/sdkfornet/ and is distributed under Apache License 2.0
+b. The package includes pre-compiled by AWS AWSSDK 2.0.2.0. It can be downloadad from http://aws.amazon.com/sdkfornet/ and is distributed under Apache License 2.0
