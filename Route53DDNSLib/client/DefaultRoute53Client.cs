@@ -36,33 +36,47 @@ namespace Route53DDNSLib.client
         private static readonly ILog logger = LogManager.GetLogger(typeof(Route53Client).FullName);
         private AmazonRoute53Client client;
 
-        public DefaultRoute53Client(string awsAccessKey, string awsSecretKey)
+        public DefaultRoute53Client(string awsAccessKey, string awsSecretKey, string region)
         {
             logger.Info("Creating Route53 client");
-            client = new AmazonRoute53Client(awsAccessKey, awsSecretKey);
+            client = new AmazonRoute53Client(awsAccessKey, awsSecretKey, Amazon.RegionEndpoint.GetBySystemName(region));
         }
 
-        public ListResourceRecordSetsResponse listRecordSets(string hostedZoneId, string startRecordIdentifier)
+        public ListResourceRecordSetsResponse listRecordSets(string hostedZoneId, 
+            string startRecordIdentifier, string startRecordName, string startRecordType)
         {
             logger.Info("Calling ListResourceRecordSets");
-            return client.ListResourceRecordSets(new ListResourceRecordSetsRequest()
-                                                    .WithHostedZoneId(hostedZoneId)
-                                                    .WithStartRecordIdentifier(startRecordIdentifier));
+            ListResourceRecordSetsRequest request = new ListResourceRecordSetsRequest() {
+                HostedZoneId = hostedZoneId,
+                StartRecordIdentifier = startRecordIdentifier,
+                StartRecordName = startRecordName,
+                StartRecordType = startRecordType
+            };
+            return client.ListResourceRecordSets(request);
         }
 
 
-        public ChangeResourceRecordSetsResponse updateRRSet(string hostedZoneId, ResourceRecordSet oldRRset, ResourceRecordSet newRRset)
+        public ChangeResourceRecordSetsResponse updateRRSet(
+            string hostedZoneId, ResourceRecordSet oldRRset, ResourceRecordSet newRRset)
         {
             logger.Info("Calling ChangeResourceRecordSets");
-            List<Change> changes = new List<Change>() {
-                new Change().WithAction(Action.DELETE.ToString()).WithResourceRecordSet(oldRRset),
-                new Change().WithAction(Action.CREATE.ToString()).WithResourceRecordSet(newRRset)
+            Change delete = new Change()
+            {
+                Action = Action.DELETE.ToString(),
+                ResourceRecordSet = oldRRset
             };
+            Change create = new Change() {
+                Action = Action.CREATE.ToString(),
+                ResourceRecordSet = newRRset
+            };
+            List<Change> changes = new List<Change>() { delete, create };
 
-            ChangeBatch batch = new ChangeBatch().WithChanges(changes.ToArray());
-            return client.ChangeResourceRecordSets(new ChangeResourceRecordSetsRequest()
-                                                        .WithHostedZoneId(hostedZoneId)
-                                                        .WithChangeBatch(batch));
+            ChangeBatch batch = new ChangeBatch() { Changes = changes };
+
+            return client.ChangeResourceRecordSets(new ChangeResourceRecordSetsRequest(){
+                HostedZoneId = hostedZoneId,
+                ChangeBatch = batch
+            });
         }
     }
 }

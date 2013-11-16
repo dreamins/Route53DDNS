@@ -39,14 +39,19 @@ namespace Route53DDNSLib.accessor
             try
             {
                 ListResourceRecordSetsResponse response;
-                String nextRecordIdentifier = null;
+                String nextRecordIdentifier = "";
+                String nextRecordName = "";
+                String nextRecordType = "";
                 ResourceRecord recordToUpdate = null;
                 do
                 {
-                    response = client.listRecordSets(hostedZone, nextRecordIdentifier);
-                    nextRecordIdentifier = response.ListResourceRecordSetsResult.NextRecordIdentifier;
+                    response = client.listRecordSets(hostedZone, 
+                    nextRecordIdentifier, nextRecordName, nextRecordType);
+                    nextRecordIdentifier = response.NextRecordIdentifier;
+                    nextRecordName = response.NextRecordName;
+                    nextRecordType = response.NextRecordType;
 
-                    foreach (ResourceRecordSet RRSet in response.ListResourceRecordSetsResult.ResourceRecordSets)
+                    foreach (ResourceRecordSet RRSet in response.ResourceRecordSets)
                     {
                         if (RRSet.Type == "A")
                         {
@@ -76,7 +81,7 @@ namespace Route53DDNSLib.accessor
 
                     }
 
-                } while (response.ListResourceRecordSetsResult.IsTruncated);
+                } while (response.IsTruncated);
 
                 throw new ConfigurationException("Cannot get previous IP from Route53. Make sure you have one A record in your hosted zone!");
             }
@@ -88,18 +93,23 @@ namespace Route53DDNSLib.accessor
 
         private ResourceRecordSet cloneRRSetWithNewValue(ResourceRecordSet RRSet, string myIP)
         {
-            ResourceRecordSet ret = new ResourceRecordSet()
-                .WithAliasTarget(RRSet.AliasTarget)
-                .WithName(RRSet.Name)
-                .WithSetIdentifier(RRSet.SetIdentifier)
-                .WithTTL(RRSet.TTL)
-                .WithType(RRSet.Type)
-                .WithResourceRecords(new List<ResourceRecord>() {
-                    new ResourceRecord().WithValue(myIP)
-                });
+            ResourceRecordSet ret = new ResourceRecordSet() {
+                AliasTarget = RRSet.AliasTarget,
+                Name = RRSet.Name,
+                SetIdentifier = RRSet.SetIdentifier,
+                TTL = RRSet.TTL,
+                Type = RRSet.Type
+            };
+            ResourceRecord rr = new ResourceRecord() {
+                Value = myIP
+            };
+            ret.ResourceRecords = new List<ResourceRecord>() {rr};
 
             // Route53 doesn't accept zero weights, and if you set it to zero you'll get an error!
-            return RRSet.Weight != 0 ? ret.WithWeight(RRSet.Weight) : ret;
+            if (RRSet.Weight != 0) {
+                ret.Weight = RRSet.Weight;
+            }
+            return ret;
         }
     }
 }

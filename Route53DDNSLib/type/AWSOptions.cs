@@ -25,6 +25,8 @@ namespace Route53DDNSLib.type
         private string awsSecretKey;
         [DataMember]
         private string hostedZoneId;
+        [DataMember]
+        private string awsRegion;
 
         public string HostedZoneId
         {
@@ -62,6 +64,19 @@ namespace Route53DDNSLib.type
             set
             {
                 awsSecretKey = value;
+            }
+        }
+
+        public string AWSRegion
+        {
+            get
+            {
+                return awsRegion;
+            }
+
+            set
+            {
+                awsRegion = value;
             }
         }
 

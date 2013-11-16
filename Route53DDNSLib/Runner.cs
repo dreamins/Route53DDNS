@@ -89,7 +89,7 @@ namespace Route53DDNSLib
                 logger.Info("Got IP [" + myIP + "]");
 
                 logger.Info("Retrieving IP from Route53");
-                Route53Client client = new DefaultRoute53Client(localOptions.AWSOptions.AWSAccessKey, localOptions.AWSOptions.AWSSecretKey);
+                Route53Client client = new DefaultRoute53Client(localOptions.AWSOptions.AWSAccessKey, localOptions.AWSOptions.AWSSecretKey, localOptions.AWSOptions.AWSRegion);
                 Route53AIPForHostedZoneAccessor accessor = new Route53AIPForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, localOptions.GeneralOptions.DomainName);
                 string oldIP = accessor.get().Trim();
 
@@ -101,8 +101,9 @@ namespace Route53DDNSLib
                     return;
                 }
 
-                logger.Info("Updating record at Route53 ");
+                logger.Info("Updating record at Route53.");
                 new Route53UpdateARecordForHostedZoneAccessor(client, localOptions.AWSOptions.HostedZoneId, oldIP, myIP, localOptions.GeneralOptions.DomainName).get();
+                logger.Info("Done done. I'll go have a cake. See you during next enrichment cycle!");
             } catch (exception.Route53DDNSException ex ) {
                 logger.Error("Got an exception haven't done anything perhaps." + ex);
             } catch (Exception ex) {

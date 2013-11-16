@@ -48,6 +48,10 @@ namespace Route53DDNS
             this.awsAccessKey.Text          = opts.AWSOptions.AWSAccessKey;
             this.awsSecretKey.Text          = opts.AWSOptions.AWSSecretKey;
             this.hostedZoneId.Text          = opts.AWSOptions.HostedZoneId;
+            if (opts.AWSOptions.AWSRegion != null && opts.AWSOptions.AWSRegion.Length != 0) // optional
+            {
+                this.awsRegion.Text = opts.AWSOptions.AWSRegion;
+            }
             foreach(IPProvider provider in opts.GeneralOptions.IPProviders) 
             {
                 this.urlList.Items.Add(provider.URL);
@@ -66,10 +70,11 @@ namespace Route53DDNS
                 opts.GeneralOptions.HasInitialDelay     = this.hasInitialDelay.Checked;
                 opts.GeneralOptions.TimerPeriodSec      = long.Parse(this.timerPeriodSec.Text);
                 opts.GeneralOptions.RunOnStart          = this.runOnStart.Checked;
-                opts.GeneralOptions.DomainName = this.domainName.Text;
+                opts.GeneralOptions.DomainName          = this.domainName.Text;
                 opts.AWSOptions.AWSAccessKey            = this.awsAccessKey.Text;
                 opts.AWSOptions.AWSSecretKey            = this.awsSecretKey.Text;
                 opts.AWSOptions.HostedZoneId            = this.hostedZoneId.Text;
+                opts.AWSOptions.AWSRegion               = this.awsRegion.Text;
                 opts.writeToConfig();
             }
             catch (Exception ex)
@@ -86,7 +91,7 @@ namespace Route53DDNS
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            logger.Info("Save cancelled. Why did you woke me up?");
+            logger.Info("Save cancelled. Why did you wake me up?");
             this.saved = false;
             this.Close();
         }

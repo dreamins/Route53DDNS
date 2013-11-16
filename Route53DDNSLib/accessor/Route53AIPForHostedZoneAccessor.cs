@@ -32,13 +32,18 @@ namespace Route53DDNSLib.accessor
             try
             {
                 ListResourceRecordSetsResponse response;
-                String nextRecordIdentifier = null;
+                // SDK doesn't like all three of them set to null.
+                String nextRecordIdentifier = "";
+                String nextRecordName = "";
+                String nextRecordType = "";
                 do
                 {
-                    response = client.listRecordSets(hostedZone, nextRecordIdentifier);
-                    nextRecordIdentifier = response.ListResourceRecordSetsResult.NextRecordIdentifier;
+                    response = client.listRecordSets(hostedZone, nextRecordIdentifier, nextRecordName, nextRecordType);
+                    nextRecordIdentifier = response.NextRecordIdentifier;
+                    nextRecordName = response.NextRecordName;
+                    nextRecordType = response.NextRecordType;
                     logger.Debug("Looking for RRSet with name [" + domainName + "]");
-                    foreach (ResourceRecordSet rrset in response.ListResourceRecordSetsResult.ResourceRecordSets)
+                    foreach (ResourceRecordSet rrset in response.ResourceRecordSets)
                     {
                         logger.Debug("Found rrset with name " + rrset.Name);
 
@@ -57,13 +62,19 @@ namespace Route53DDNSLib.accessor
                         }
 
                         // if specific domain name required, then compare
-                        if (String.Equals(domainName.ToLower(), rrset.Name.ToLower())) {
+                        if (String.Equals(domainName.ToLower(), rrset.Name.ToLower())) 
+                        {
                             logger.Debug("Seems to be the one we need");
                             return rrset.ResourceRecords[0].Value;
                         }
+
+                        if (response.IsTruncated)
+                        {
+                            logger.Debug("Response is truncated. Paginating.");
+                        }
                     }
 
-                } while (response.ListResourceRecordSetsResult.IsTruncated);
+                } while (response.IsTruncated);
 
                 throw new ConfigurationException("Cannot get previous IP from Route53. Make sure you have one A record in your hosted zone!");
             }

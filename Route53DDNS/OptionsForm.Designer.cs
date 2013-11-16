@@ -42,6 +42,8 @@
             this.label4 = new System.Windows.Forms.Label();
             this.TabControl = new System.Windows.Forms.TabControl();
             this.tabGeneralPage = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.domainName = new System.Windows.Forms.TextBox();
             this.runOnStart = new System.Windows.Forms.CheckBox();
             this.tabAWSPage = new System.Windows.Forms.TabPage();
             this.tabAdvancedPage = new System.Windows.Forms.TabPage();
@@ -56,8 +58,8 @@
             this.cancelUpdateButton = new System.Windows.Forms.Button();
             this.updateButton = new System.Windows.Forms.Button();
             this.urlList = new System.Windows.Forms.ListBox();
-            this.domainName = new System.Windows.Forms.TextBox();
-            this.label7 = new System.Windows.Forms.Label();
+            this.awsRegion = new System.Windows.Forms.TextBox();
+            this.label8 = new System.Windows.Forms.Label();
             this.TabControl.SuspendLayout();
             this.tabGeneralPage.SuspendLayout();
             this.tabAWSPage.SuspendLayout();
@@ -198,6 +200,22 @@
             this.tabGeneralPage.Text = "General";
             this.tabGeneralPage.UseVisualStyleBackColor = true;
             // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(178, 179);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(72, 13);
+            this.label7.TabIndex = 8;
+            this.label7.Text = "Domain name";
+            // 
+            // domainName
+            // 
+            this.domainName.Location = new System.Drawing.Point(26, 176);
+            this.domainName.Name = "domainName";
+            this.domainName.Size = new System.Drawing.Size(146, 20);
+            this.domainName.TabIndex = 7;
+            // 
             // runOnStart
             // 
             this.runOnStart.AutoSize = true;
@@ -210,6 +228,8 @@
             // 
             // tabAWSPage
             // 
+            this.tabAWSPage.Controls.Add(this.awsRegion);
+            this.tabAWSPage.Controls.Add(this.label8);
             this.tabAWSPage.Controls.Add(this.awsAccessKey);
             this.tabAWSPage.Controls.Add(this.hostedZoneId);
             this.tabAWSPage.Controls.Add(this.label4);
@@ -347,21 +367,22 @@
             this.urlList.Click += new System.EventHandler(this.urlList_SelectedIndexChanged);
             this.urlList.SelectedIndexChanged += new System.EventHandler(this.urlList_SelectedIndexChanged);
             // 
-            // domainName
+            // awsRegion
             // 
-            this.domainName.Location = new System.Drawing.Point(26, 176);
-            this.domainName.Name = "domainName";
-            this.domainName.Size = new System.Drawing.Size(146, 20);
-            this.domainName.TabIndex = 7;
+            this.awsRegion.Location = new System.Drawing.Point(6, 108);
+            this.awsRegion.Name = "awsRegion";
+            this.awsRegion.Size = new System.Drawing.Size(171, 20);
+            this.awsRegion.TabIndex = 12;
+            this.awsRegion.Text = "us-east-1";
             // 
-            // label7
+            // label8
             // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(178, 179);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(72, 13);
-            this.label7.TabIndex = 8;
-            this.label7.Text = "Domain name";
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(185, 111);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(69, 13);
+            this.label8.TabIndex = 13;
+            this.label8.Text = "AWS Region";
             // 
             // OptionsForm
             // 
@@ -418,5 +439,7 @@
         private System.Windows.Forms.CheckBox runOnStart;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox domainName;
+        private System.Windows.Forms.TextBox awsRegion;
+        private System.Windows.Forms.Label label8;
     }
 }

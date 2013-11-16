@@ -12,9 +12,12 @@ namespace Route53DDNSLib.client
     interface Route53Client
     {
         // Calls Route53 list for given hostedzone id and record identifier
-        ListResourceRecordSetsResponse listRecordSets(string hostedZoneId, string startRecordIdentifier);
+        ListResourceRecordSetsResponse listRecordSets(
+            string hostedZoneId, string startRecordIdentifier, string startRecordName, 
+            string startRecordType);
 
         // Replaces given rrset with supplied one for hosted zone
-        ChangeResourceRecordSetsResponse updateRRSet(string hostedZoneId, ResourceRecordSet oldRRset, ResourceRecordSet newRRset);
+        ChangeResourceRecordSetsResponse updateRRSet(
+            string hostedZoneId, ResourceRecordSet oldRRset, ResourceRecordSet newRRset);
     }
 }
